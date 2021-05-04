@@ -9,33 +9,9 @@ class FeedView extends View {
     this._parentElement.addEventListener("click", this._toggleInfo.bind(this));
   }
 
-  _toggleInfo(e) {
-    const btn = e.target.closest(".card__info");
-    if (!btn) return;
-
-    e.target
-      .closest(".card")
-      .querySelector(".card__body--overlay")
-      .classList.toggle("hidden");
-  }
-
-  // changeDownloadIcon(id, state) {
-  //   const btn = document
-  //     .querySelector(`#${id}`)
-  //     .querySelector(".photo__download")
-  //     .querySelector("ion-icon");
-  //   console.log(btn);
-  //   console.log(btn.getAttribute("name"));
-  //   btn.setAttribute("name", `cloud-download-${state}`);
-  // }
-
-  addHandlerDownload(handler) {
-    this._parentElement.addEventListener("click", function (e) {
-      const btn = e.target.closest(".photo__download");
-      if (!btn) return;
-
-      const id = btn.closest(".card").getAttribute("id");
-      handler(id);
+  addHandlerLoad(handler) {
+    window.addEventListener("load", function () {
+      handler();
     });
   }
 

@@ -1,6 +1,26 @@
 export default class View {
-  updateHeaderTitle(title) {
+  updateHeaderTitle(title = "Feed") {
     document.querySelector("#header__title--text").innerText = title;
+  }
+
+  _toggleInfo(e) {
+    const btn = e.target.closest(".card__info");
+    if (!btn) return;
+
+    e.target
+      .closest(".card")
+      .querySelector(".card__body--overlay")
+      .classList.toggle("hidden");
+  }
+
+  addHandlerDownload(handler) {
+    this._parentElement.addEventListener("click", function (e) {
+      const btn = e.target.closest(".photo__download");
+      if (!btn) return;
+
+      const id = btn.closest(".card").getAttribute("id");
+      handler(id);
+    });
   }
 
   render(data) {
@@ -18,7 +38,7 @@ export default class View {
     this._parentElement.insertAdjacentHTML("afterbegin", markup);
   }
 
-  toggleView() {
+  switchView() {
     document.querySelector(".feed").classList.add("hidden");
     document.querySelector(".results").classList.add("hidden");
     document.querySelector(".bookmarks").classList.add("hidden");

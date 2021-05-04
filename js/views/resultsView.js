@@ -4,6 +4,11 @@ class ResultsView extends View {
   _parentElement = document.querySelector(".results");
   _data;
 
+  constructor() {
+    super();
+    this._parentElement.addEventListener("click", this._toggleInfo.bind(this));
+  }
+
   _generateMarkup() {
     return `
     ${this._data

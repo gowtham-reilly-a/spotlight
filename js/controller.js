@@ -11,22 +11,23 @@ const controlSinglePhoto = function () {
 };
 
 const controlSearch = async function (query) {
-  resultsView.toggleView();
-  resultsView.renderSpinner();
-  await model.searchPhotos(query);
-  searchView.hideSearchForm();
+  resultsView.switchView();
   searchView.updateHeaderTitle(query);
+  resultsView.renderSpinner();
+  searchView.hideSearchForm();
+  await model.searchPhotos(query);
   resultsView.render(model.state.search.results);
 };
 
 const controlRandomPhotos = async function () {
-  feedView.toggleView();
+  feedView.switchView();
   feedView.renderSpinner();
   await model.getRandomPhotos();
   feedView.render(model.state.random);
 };
 
 const controlPhotosList = async function () {
+  feedView.switchView();
   feedView.renderSpinner();
   await model.getPhotosList();
   feedView.render(model.state.photos);
@@ -38,13 +39,9 @@ const controlDownload = async function (id) {
 
 const init = function () {
   searchView.addHandlerSearchSubmit(controlSearch);
+  resultsView.addHandlerDownload(controlDownload);
   feedView.addHandlerDownload(controlDownload);
-  // controlPhotosList();
-  controlRandomPhotos();
-  // controlSinglePhotos();
+  feedView.addHandlerLoad(controlRandomPhotos);
 };
 
 init();
-
-// controlPhotos();
-// controlSearch();

@@ -45,7 +45,6 @@ export const searchPhotos = async function (query) {
       total: response.total,
       totalPages: response.total_pages,
     };
-    console.log(state.search);
   } catch (err) {
     console.log(err);
   }
