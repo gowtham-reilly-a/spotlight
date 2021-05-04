@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/main.css" />
+    <script defer type="module" src="./js/controller.js"></script>
+    <title>Spotlight</title>
+  </head>
+  <body>
+    <div class="app">
+      <header class="header">
+        <div class="header__topbar">
+          <h2 class="brand">Spotlight</h2>
+          <nav class="nav">
+            <div class="header__search">
+              <form id="header__search--form" class="hidden">
+                <input
+                  type="text"
+                  name="header__search--input"
+                  id="header__search--input"
+                  placeholder="Search"
+                />
+              </form>
+              <span class="header__search--close hidden"
+                ><ion-icon name="close-circle-outline"></ion-icon
+              ></span>
+              <span class="header__search--open"
+                ><ion-icon name="search-outline"></ion-icon
+              ></span>
+            </div>
+            <div class="header__bookmarks">
+              <ion-icon name="bookmarks-outline"></ion-icon>
+            </div>
+          </nav>
+        </div>
+      </header>
+      <div class="header__title"><h3 id="header__title--text">Feed</h3></div>
+      <div class="feed"></div>
+      <div class="results hidden"></div>
+      <div class="bookmarks hidden"></div>
+      <div class="profile hidden"></div>
+      <footer class="footer">
+        <span>Built by</span>
+        <a href="https://gowthamreilly.com" target="_blank">Gowtham Reilly</a>
+        <span>using Unsplash API</span>
+      </footer>
+    </div>
+
+    <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
+  </body>
+</html>

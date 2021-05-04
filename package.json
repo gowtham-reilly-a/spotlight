@@ -1,0 +1,22 @@
+{
+  "name": "spotlight",
+  "version": "1.0.0",
+  "description": "collection of random pictures in different sizes",
+  "default": "index.js",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html --out-dir ./dist"
+  },
+  "author": "Gowtham Reilly",
+  "license": "ISC",
+  "devDependencies": {
+    "@parcel/transformer-js": "^2.0.0-alpha.3",
+    "parcel": "^2.0.0-beta.2",
+    "parcel-bundler": "^1.12.5"
+  },
+  "dependencies": {
+    "core-js": "^3.11.1",
+    "regenerator-runtime": "^0.13.7",
+    "unsplash-js": "^7.0.10"
+  }
+}
