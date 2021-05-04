@@ -58,7 +58,6 @@ export const getRandomPhotos = async function () {
     });
 
     state.random = res.response;
-    console.log(state.random);
   } catch (err) {
     console.error(err);
   }
