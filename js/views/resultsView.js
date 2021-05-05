@@ -3,6 +3,8 @@ import View from "./view.js";
 class ResultsView extends View {
   _parentElement = document.querySelector(".results");
   _data;
+  _errorMessage =
+    "No results available for your search. Please try other keywords!";
 
   constructor() {
     super();

@@ -23,6 +23,12 @@ export default class View {
     });
   }
 
+  update(data) {
+    this._data = data;
+    const markup = this._generateMarkup();
+    this._parentElement.insertAdjacentHTML("beforeend", markup);
+  }
+
   render(data) {
     this._data = data;
     const markup = this._generateMarkup();
@@ -33,6 +39,19 @@ export default class View {
   renderSpinner() {
     const markup = `
     <div class="spinner"><ion-icon name="reload-outline"></ion-icon></div>
+    `;
+    this._parentElement.innerHTML = "";
+    this._parentElement.insertAdjacentHTML("afterbegin", markup);
+  }
+
+  renderError(message = this._errorMessage) {
+    const markup = `
+    <div class="error">
+        <div class="error__icon">
+          <ion-icon name="warning-outline"></ion-icon>
+        </div>
+        <div class="error__message">${message}</div>
+      </div>
     `;
     this._parentElement.innerHTML = "";
     this._parentElement.insertAdjacentHTML("afterbegin", markup);

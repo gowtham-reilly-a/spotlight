@@ -13,6 +13,7 @@ html {
 ion-icon {
   font-size: 2.4rem;
   cursor: pointer;
+  margin-top: 0.5rem;
 }
 
 .app {
@@ -23,7 +24,7 @@ ion-icon {
 
   display: grid;
   grid-template-columns: 1fr;
-  grid-gap: 1rem;
+  grid-gap: 2rem;
 }
 
 .header {
@@ -41,6 +42,11 @@ ion-icon {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.header__topbar h2 a {
+  text-decoration: none;
+  color: black;
 }
 
 .nav {
@@ -138,6 +144,7 @@ ion-icon {
   transition: 1s;
   width: 100%;
   height: 100%;
+  overflow: hidden;
 
   display: grid;
   grid-template-columns: 1fr;
@@ -236,11 +243,29 @@ ion-icon {
   margin-bottom: 0.5rem;
 }
 
+.pagination {
+  display: flex;
+  justify-content: space-around;
+}
+
+.pagination__prev,
+.pagination__next,
+.pagination__loadmore {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  /* background-color: #3498db;
+  padding: 0.5rem 1rem;
+  border-radius: 5rem; */
+  color: #3498db;
+  cursor: pointer;
+  font-weight: bold;
+}
+
 .footer {
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  gap: 0.5rem;
 
   position: sticky;
   bottom: 0;
@@ -258,6 +283,19 @@ ion-icon {
 .spinner {
   margin: 5rem auto;
   text-align: center;
+}
+
+.error {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  font-size: 1.5rem;
+}
+
+.error ion-icon {
+  font-size: 3rem;
+  color: #e74c3c;
 }
 
 .spinner ion-icon {
