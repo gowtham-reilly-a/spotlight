@@ -10,6 +10,10 @@ html {
   font-size: 62.5%;
 }
 
+body {
+  background-color: #f7f7f7;
+}
+
 ion-icon {
   font-size: 2.4rem;
   cursor: pointer;
@@ -280,16 +284,13 @@ ion-icon {
   color: #3498db;
 }
 
-.spinner {
-  margin: 5rem auto;
-  text-align: center;
-}
-
 .error {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
 
+  padding: 1rem;
   font-size: 1.5rem;
 }
 
@@ -298,10 +299,26 @@ ion-icon {
   color: #e74c3c;
 }
 
+.spinner {
+  margin: 5rem auto;
+  text-align: center;
+}
+
 .spinner ion-icon {
   height: 6rem;
   width: 6rem;
   /* fill: tomato; */
+  animation: rotate 2s infinite linear;
+}
+
+.pagination .spinner {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.pagination .spinner ion-icon {
+  height: 2.4rem;
+  width: 2.4rem;
   animation: rotate 2s infinite linear;
 }
 

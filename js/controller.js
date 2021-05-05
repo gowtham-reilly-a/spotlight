@@ -5,20 +5,8 @@ import * as model from "./model.js";
 import feedView from "./views/feedView.js";
 import searchView from "./views/searchView.js";
 import resultsView from "./views/resultsView.js";
+import bookmarksView from "./views/bookmarksView.js";
 import paginationView from "./views/paginationView.js";
-
-// const controlSinglePhoto = function () {
-//   model.loadPhoto("tG5pIdfy27c");
-// };
-
-// const controlPhotosList = async function () {
-//   feedView.switchView();
-//   feedView.renderSpinner();
-//   await model.getPhotosList();
-//   feedView.render(model.state.photos);
-//   paginationView.showPagination();
-//   paginationView.render(model.state.photos);
-// };
 
 const controlRandomPhotos = async function () {
   try {
@@ -35,6 +23,7 @@ const controlRandomPhotos = async function () {
 
 const controlSearch = async function (query) {
   try {
+    paginationView.hidePagination();
     resultsView.switchView();
     searchView.updateHeaderTitle(query);
     resultsView.renderSpinner();
@@ -45,15 +34,16 @@ const controlSearch = async function (query) {
     paginationView.render(model.state.search);
   } catch (err) {
     resultsView.renderError();
-    console.log(err);
   }
 };
 
 const controlNumbersPagination = async function (page) {
   try {
+    paginationView.hidePagination();
     resultsView.renderSpinner();
     await model.searchPhotos(model.state.search.query, page);
     resultsView.render(model.state.search.results);
+    paginationView.showPagination();
     paginationView.render(model.state.search);
   } catch (err) {
     console.log(err);
@@ -71,19 +61,52 @@ const controlLoadmorePagination = async function () {
   }
 };
 
-const controlDownload = async function (id) {
+const controlBookmark = async function (id, view) {
   try {
-    await model.downloadPhoto(id);
+    if (view === "feed") feedView.updateBookmark(id);
+    if (view === "results") resultsView.updateBookmark(id);
+    if (view === "bookmarks") bookmarksView.deleteCard(id);
+
+    await model.switchBookmark(id);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const controlBookmarkView = function () {
+  paginationView.hidePagination();
+  bookmarksView.switchView();
+  bookmarksView.updateHeaderTitle();
+  bookmarksView.renderSpinner();
+
+  setTimeout(function () {
+    if (model.state.bookmarks.length !== 0)
+      bookmarksView.render(model.state.bookmarks);
+    else bookmarksView.renderError();
+  }, 500);
+};
+
+const controlDownload = function (id) {
+  try {
+    model.downloadPhoto(id);
   } catch (err) {
     console.log(err);
   }
 };
 
 const init = function () {
-  feedView.addHandlerDownload(controlDownload);
   feedView.addHandlerLoad(controlRandomPhotos);
+  feedView.addHandlerDownload(controlDownload);
+  feedView.addHandlerBookmark(controlBookmark);
+
   searchView.addHandlerSearchSubmit(controlSearch);
   resultsView.addHandlerDownload(controlDownload);
+  resultsView.addHandlerBookmark(controlBookmark);
+
+  bookmarksView.addHandlerShowBookmarksBtn(controlBookmarkView);
+  bookmarksView.addHandlerDownload(controlDownload);
+  bookmarksView.addHandlerBookmark(controlBookmark);
+
   paginationView.addHandlerNumbersPagination(controlNumbersPagination);
   paginationView.addHandlerLoadmorePagination(controlLoadmorePagination);
 };

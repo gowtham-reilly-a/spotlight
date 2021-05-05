@@ -1,5 +1,5 @@
 export default class View {
-  updateHeaderTitle(title = "Feed") {
+  updateHeaderTitle(title = this._title) {
     document.querySelector("#header__title--text").innerText = title;
   }
 
@@ -11,6 +11,39 @@ export default class View {
       .closest(".card")
       .querySelector(".card__body--overlay")
       .classList.toggle("hidden");
+  }
+
+  updateBookmark(id) {
+    const el = document
+      .getElementById(`${id}`)
+      .querySelector(".photo__bookmark")
+      .querySelector("ion-icon");
+
+    const elName = el.getAttribute("name");
+
+    if (elName === "bookmark-outline")
+      return el.setAttribute("name", "bookmark-sharp");
+
+    if (elName === "bookmark-sharp")
+      el.setAttribute("name", "bookmark-outline");
+  }
+
+  addHandlerBookmark(handler) {
+    this._parentElement.addEventListener("click", function (e) {
+      const btn = e.target.closest(".photo__bookmark");
+      if (!btn) return;
+
+      const id = btn.closest(".card").getAttribute("id");
+
+      let parent = btn.closest(".feed");
+      if (parent) return handler(id, "feed");
+
+      parent = btn.closest(".results");
+      if (parent) return handler(id, "results");
+
+      parent = btn.closest(".bookmarks");
+      if (parent) return handler(id, "bookmarks");
+    });
   }
 
   addHandlerDownload(handler) {

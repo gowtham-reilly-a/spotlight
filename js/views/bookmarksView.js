@@ -1,13 +1,26 @@
 import View from "./view.js";
 
-class ResultsView extends View {
-  _parentElement = document.querySelector(".results");
+class BookmarksView extends View {
+  _parentElement = document.querySelector(".bookmarks");
+  _btnShowBookmarks = document.querySelector(".header__bookmarks");
   _data;
-  _errorMessage = "No results available. Please try other keywords!";
+  _title = "Bookmarks";
+  _errorMessage = "Please bookmark some nice photos to see here!";
 
   constructor() {
     super();
     this._parentElement.addEventListener("click", this._toggleInfo.bind(this));
+  }
+
+  deleteCard(id) {
+    const elID = "#" + id;
+    const card = this._parentElement.querySelector(elID);
+    console.log(card);
+    card.remove();
+  }
+
+  addHandlerShowBookmarksBtn(handler) {
+    this._btnShowBookmarks.addEventListener("click", handler);
   }
 
   _generateMarkup() {
@@ -162,4 +175,4 @@ class ResultsView extends View {
   }
 }
 
-export default new ResultsView();
+export default new BookmarksView();

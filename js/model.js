@@ -13,36 +13,23 @@ export const state = {
     curPage: START_PAGE,
     totalPages: 0,
   },
+  bookmarks: [],
 };
 
 const unsplash = createApi({
   accessKey: ACCESS_KEY,
 });
 
-// export const loadPhoto = async function (id) {
-//   try {
-//     const res = await unsplash.photos.get({
-//       photoId: id,
-//     });
-//     state.photo = res.response;
-//     console.log(state.photo);
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
-
-// export const getPhotosList = async function () {
-//   try {
-//     const res = await unsplash.photos.list({
-//       perPage: 50,
-//     });
-
-//     state.photos = res.response.results;
-//     console.log(state.photos);
-//   } catch (err) {
-//     console.error(err);
-//   }
-// };
+export const loadPhoto = async function (id) {
+  try {
+    const res = await unsplash.photos.get({
+      photoId: id,
+    });
+    state.photo = res.response;
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 export const getRandomPhotos = async function () {
   try {
@@ -50,7 +37,17 @@ export const getRandomPhotos = async function () {
       count: 50,
     });
 
-    state.random = res.response;
+    state.random = res.response.map((photo) => {
+      const bookmark = state.bookmarks.some(
+        (bookmark) => bookmark.id === photo.id
+      );
+      return {
+        ...photo,
+        bookmark,
+      };
+    });
+
+    state.photos.push(...state.random);
   } catch (err) {
     throw err;
   }
@@ -66,10 +63,23 @@ export const searchPhotos = async function (query, page = START_PAGE) {
 
     const { response } = res;
 
-    state.search.results = response.results;
+    if (response.results.length === 0) throw new Error();
+
+    state.search.results = response.results.map((photo) => {
+      const bookmark = state.bookmarks.some(
+        (bookmark) => bookmark.id === photo.id
+      );
+      return {
+        ...photo,
+        bookmark,
+      };
+    });
+
     state.search.totalPages = response.total_pages;
     state.search.query = query;
     state.search.curPage = page;
+
+    state.photos.push(...state.search.results);
   } catch (err) {
     throw err;
   }
@@ -113,3 +123,52 @@ export const downloadPhoto = async function (id) {
     throw err;
   }
 };
+
+const localStorageBookmarks = function () {
+  localStorage.setItem("spotlight_bookmarks", JSON.stringify(state.bookmarks));
+};
+
+const addBookmark = async function (id) {
+  try {
+    const photo = state.photos.find((photo) => photo.id === id);
+
+    if (photo) {
+      photo.bookmark = true;
+      state.bookmarks.push(photo);
+    } else {
+      console.log("foriegn");
+      await loadPhoto(id);
+      state.photo.bookmark = true;
+      state.bookmarks.push(state.photo);
+    }
+
+    localStorageBookmarks();
+  } catch (err) {
+    throw err;
+  }
+};
+
+const removeBookmark = function (id) {
+  const index = state.bookmarks.findIndex((bookmark) => bookmark.id === id);
+
+  state.bookmarks.splice(index, 1);
+  localStorageBookmarks();
+};
+
+export const switchBookmark = async function (id) {
+  try {
+    const status = state.bookmarks.some((bookmark) => bookmark.id === id);
+
+    if (status) removeBookmark(id);
+    else addBookmark(id);
+  } catch (err) {
+    throw err;
+  }
+};
+
+const init = function () {
+  const data = JSON.parse(localStorage.getItem("spotlight_bookmarks"));
+  if (data) state.bookmarks = data;
+};
+
+init();

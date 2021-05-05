@@ -3,6 +3,7 @@ import View from "./view.js";
 class FeedView extends View {
   _parentElement = document.querySelector(".feed");
   _data;
+  _title = "Feed";
 
   constructor() {
     super();
@@ -137,7 +138,9 @@ class FeedView extends View {
               <div class="photo__interaction">
                 
                 <div class="photo__bookmark">
-                  <ion-icon name="bookmark-outline"></ion-icon>
+                  <ion-icon name="bookmark-${
+                    photo.bookmark ? "sharp" : "outline"
+                  }"></ion-icon>
                 </div>
                 
               </div>
