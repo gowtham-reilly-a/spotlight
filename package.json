@@ -2,17 +2,19 @@
   "name": "spotlight",
   "version": "1.0.0",
   "description": "Explore photos of different photographers from all around the world via Unsplash",
-  "default": "index.js",
+  "main": "index.js",
   "scripts": {
     "start": "parcel index.html",
-    "build": "parcel build index.html --dist-dir ./dist"
+    "build": "parcel build index.html --out-dir dist --public-url ./dist --target node --bundle-node-modules"
   },
   "author": "Gowtham Reilly",
   "license": "ISC",
   "devDependencies": {
-    "parcel": "^2.0.0-beta.2"
+    "parcel-bundler": "^1.12.5"
   },
   "dependencies": {
+    "core-js": "^3.11.3",
+    "regenerator-runtime": "^0.13.7",
     "unsplash-js": "^7.0.10"
   }
 }

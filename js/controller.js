@@ -1,3 +1,5 @@
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 import * as model from "./model.js";
 import feedView from "./views/feedView.js";
 import searchView from "./views/searchView.js";
