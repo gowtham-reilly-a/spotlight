@@ -13,6 +13,18 @@ export default class View {
       .classList.toggle("hidden");
   }
 
+  addHandlerUsername(handler) {
+    this._parentElement.addEventListener("click", function (e) {
+      const btn = e.target.closest(".photographer__username");
+
+      if (!btn) return;
+
+      const username = btn.dataset.username;
+
+      handler(username);
+    });
+  }
+
   updateBookmark(id) {
     const el = document
       .getElementById(`${id}`)
@@ -40,6 +52,9 @@ export default class View {
 
       parent = btn.closest(".results");
       if (parent) return handler(id, "results");
+
+      parent = btn.closest(".profile");
+      if (parent) return handler(id, "profile");
 
       parent = btn.closest(".bookmarks");
       if (parent) return handler(id, "bookmarks");

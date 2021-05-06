@@ -6,10 +6,13 @@ import searchView from "./views/searchView.js";
 import resultsView from "./views/resultsView.js";
 import bookmarksView from "./views/bookmarksView.js";
 import paginationView from "./views/paginationView.js";
+import profileView from "./views/profileView.js";
+import { async } from "regenerator-runtime/runtime";
 
 const controlRandomPhotos = async function () {
   try {
     feedView.switchView();
+    feedView.updateHeaderTitle();
     feedView.renderSpinner();
     await model.getRandomPhotos();
     feedView.render(model.state.random);
@@ -36,7 +39,7 @@ const controlSearch = async function (query) {
   }
 };
 
-const controlNumbersPagination = async function (page) {
+const controlSearchResults = async function (page) {
   try {
     paginationView.hidePagination();
     resultsView.renderSpinner();
@@ -49,8 +52,10 @@ const controlNumbersPagination = async function (page) {
   }
 };
 
-const controlLoadmorePagination = async function () {
+const controlFeedUpdate = async function (parent) {
   try {
+    if (parent !== "feed") return;
+
     paginationView.renderSpinner();
     await model.getRandomPhotos();
     feedView.update(model.state.random);
@@ -64,6 +69,7 @@ const controlBookmark = async function (id, view) {
   try {
     if (view === "feed") feedView.updateBookmark(id);
     if (view === "results") resultsView.updateBookmark(id);
+    if (view === "profile") profileView.updateBookmark(id);
     if (view === "bookmarks") bookmarksView.deleteCard(id);
 
     await model.switchBookmark(id);
@@ -99,22 +105,66 @@ const controlReturnToFeed = function () {
   paginationView.showPagination();
 };
 
+const controlPhotographerProfile = async function (username) {
+  try {
+    profileView.switchView();
+    profileView.updateHeaderTitle();
+    profileView.renderSpinner();
+    paginationView.hidePagination();
+    await model.getPhotographerProfile(username);
+    profileView.render(model.state.photographer);
+
+    if (
+      model.state.photographer.curPage <= model.state.photographer.totalPages
+    ) {
+      paginationView.showPagination();
+      paginationView.render("loadmore");
+    } else paginationView.hidePagination();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const controlPhotographerPhotos = async function (parent) {
+  try {
+    if (parent !== "profile") return;
+
+    paginationView.renderSpinner();
+    await model.getPhotographerPhotos();
+    profileView.updatePhotos(model.state.photographer.photos);
+
+    if (model.state.photographer.curPage <= model.state.photographer.totalPages)
+      paginationView.render("loadmore");
+    else paginationView.hidePagination();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const init = function () {
   feedView.addHandlerLoad(controlRandomPhotos);
   feedView.addHandlerDownload(controlDownload);
   feedView.addHandlerBookmark(controlBookmark);
   feedView.addHandlerLogo(controlReturnToFeed);
+  feedView.addHandlerUsername(controlPhotographerProfile);
+
+  profileView.addHandlerUsername(controlPhotographerProfile);
+  profileView.addHandlerDownload(controlDownload);
+  profileView.addHandlerBookmark(controlBookmark);
 
   searchView.addHandlerSearchSubmit(controlSearch);
   resultsView.addHandlerDownload(controlDownload);
   resultsView.addHandlerBookmark(controlBookmark);
+  resultsView.addHandlerUsername(controlPhotographerProfile);
 
   bookmarksView.addHandlerShowBookmarksBtn(controlBookmarkView);
   bookmarksView.addHandlerDownload(controlDownload);
   bookmarksView.addHandlerBookmark(controlBookmark);
+  bookmarksView.addHandlerUsername(controlPhotographerProfile);
 
-  paginationView.addHandlerNumbersPagination(controlNumbersPagination);
-  paginationView.addHandlerLoadmorePagination(controlLoadmorePagination);
+  paginationView.addHandlerNumbersPagination(controlSearchResults);
+  paginationView.addHandlerLoadmorePagination(controlFeedUpdate);
+  paginationView.addHandlerLoadmorePagination(controlPhotographerPhotos);
 };
 
 init();

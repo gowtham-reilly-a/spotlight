@@ -17,7 +17,15 @@ class PaginationView extends View {
       const btn = e.target.closest(".pagination__loadmore");
       if (!btn) return;
 
-      handler();
+      let parent;
+
+      if (!document.querySelector(".feed").classList.contains("hidden"))
+        parent = "feed";
+
+      if (!document.querySelector(".profile").classList.contains("hidden"))
+        parent = "profile";
+
+      handler(parent);
     });
   }
 

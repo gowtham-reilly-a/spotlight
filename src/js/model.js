@@ -1,8 +1,15 @@
+import { async } from "regenerator-runtime";
 import { createApi } from "unsplash-js";
 import { ACCESS_KEY, START_PAGE } from "./config.js";
 
 export const state = {
-  photographer: "",
+  photographer: {
+    profile: {},
+    photos: [],
+    curPage: START_PAGE,
+    totalPages: 0,
+  },
+  photographers: [],
   photo: {},
   photos: [],
   random: [],
@@ -79,6 +86,63 @@ export const searchPhotos = async function (query, page = START_PAGE) {
     state.search.curPage = page;
 
     state.photos.push(...state.search.results);
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const getPhotographerPhotos = async function (fresh = false) {
+  try {
+    let page;
+
+    if (fresh) page = START_PAGE;
+    else page = state.photographer.curPage;
+
+    const res = await unsplash.users.getPhotos({
+      username: state.photographer?.profile.username,
+      page,
+      perPage: 30,
+    });
+
+    const { response } = res;
+
+    state.photographer.photos = response.results.map((photo) => {
+      const bookmark = state.bookmarks.some(
+        (bookmark) => bookmark.id === photo.id
+      );
+
+      return {
+        ...photo,
+        bookmark,
+      };
+    });
+
+    state.photographer.totalPages = Math.ceil(response.total / 30);
+
+    if (state.photographer.totalPages > page) state.photographer.curPage += 1;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getPhotographerProfile = async function (username) {
+  try {
+    const photographer = state.photographers.some(
+      (photographer) => photographer.username === username
+    );
+
+    if (photographer)
+      state.photographer.profile = state.photographers.find(
+        (photographer) => photographer.username === username
+      );
+    else {
+      const res = await unsplash.users.get({
+        username,
+      });
+      state.photographer.profile = res.response;
+      state.photographers.push(res.response);
+    }
+    await getPhotographerPhotos(true);
   } catch (err) {
     throw err;
   }

@@ -26,7 +26,9 @@ class ResultsView extends View {
                 />
               </div>
               <div class="card__header--meta">
-                <div class="photographer__username">${photo.user.username}</div>
+                <div class="photographer__username" data-username="${
+                  photo.user.username
+                }">${photo.user.username}</div>
                 <div class="photo__location">
                   ${photo.location?.title ? photo.location.title : ""}
                 </div>
