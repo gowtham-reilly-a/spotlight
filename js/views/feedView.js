@@ -10,6 +10,10 @@ class FeedView extends View {
     this._parentElement.addEventListener("click", this._toggleInfo.bind(this));
   }
 
+  addHandlerLogo(handler) {
+    document.getElementById("brand").addEventListener("click", handler);
+  }
+
   addHandlerLoad(handler) {
     window.addEventListener("load", function () {
       handler();

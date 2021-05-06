@@ -1,6 +1,3 @@
-import "core-js/stable";
-import "regenerator-runtime/runtime";
-import { async } from "regenerator-runtime/runtime";
 import * as model from "./model.js";
 import feedView from "./views/feedView.js";
 import searchView from "./views/searchView.js";
@@ -94,10 +91,17 @@ const controlDownload = function (id) {
   }
 };
 
+const controlReturnToFeed = function () {
+  feedView.switchView();
+  feedView.updateHeaderTitle();
+  paginationView.showPagination();
+};
+
 const init = function () {
   feedView.addHandlerLoad(controlRandomPhotos);
   feedView.addHandlerDownload(controlDownload);
   feedView.addHandlerBookmark(controlBookmark);
+  feedView.addHandlerLogo(controlReturnToFeed);
 
   searchView.addHandlerSearchSubmit(controlSearch);
   resultsView.addHandlerDownload(controlDownload);

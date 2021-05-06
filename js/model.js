@@ -1,4 +1,3 @@
-import { async } from "regenerator-runtime";
 import { createApi } from "unsplash-js";
 import { ACCESS_KEY, START_PAGE } from "./config.js";
 
@@ -34,7 +33,7 @@ export const loadPhoto = async function (id) {
 export const getRandomPhotos = async function () {
   try {
     const res = await unsplash.photos.getRandom({
-      count: 50,
+      count: 30,
     });
 
     state.random = res.response.map((photo) => {
@@ -136,7 +135,6 @@ const addBookmark = async function (id) {
       photo.bookmark = true;
       state.bookmarks.push(photo);
     } else {
-      console.log("foriegn");
       await loadPhoto(id);
       state.photo.bookmark = true;
       state.bookmarks.push(state.photo);

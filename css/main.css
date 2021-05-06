@@ -48,9 +48,8 @@ ion-icon {
   align-items: center;
 }
 
-.header__topbar h2 a {
-  text-decoration: none;
-  color: black;
+.header__topbar #brand {
+  cursor: pointer;
 }
 
 .nav {
