@@ -1,0 +1,23 @@
+.spinner {
+  margin: 5rem auto;
+  text-align: center;
+
+  & ion-icon {
+    height: 6rem;
+    width: 6rem;
+    animation: rotate 2s infinite linear;
+  }
+}
+
+.pagination {
+  & .spinner {
+    margin: 0 auto;
+    text-align: center;
+
+    & ion-icon {
+      height: 2.4rem;
+      width: 2.4rem;
+      animation: rotate 2s infinite linear;
+    }
+  }
+}

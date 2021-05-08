@@ -103,6 +103,7 @@ const controlReturnToFeed = function () {
   feedView.switchView();
   feedView.updateHeaderTitle();
   paginationView.showPagination();
+  paginationView.render("loadmore");
 };
 
 const controlPhotographerProfile = async function (username) {

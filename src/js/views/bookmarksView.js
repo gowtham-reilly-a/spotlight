@@ -15,7 +15,6 @@ class BookmarksView extends View {
   deleteCard(id) {
     const elID = "#" + id;
     const card = this._parentElement.querySelector(elID);
-    console.log(card);
     card.remove();
   }
 

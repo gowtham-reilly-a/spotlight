@@ -118,8 +118,9 @@ export const getPhotographerPhotos = async function (fresh = false) {
     });
 
     state.photographer.totalPages = Math.ceil(response.total / 30);
+    state.photographer.curPage = page;
 
-    if (state.photographer.totalPages > page) state.photographer.curPage += 1;
+    if (state.photographer.totalPages >= page) state.photographer.curPage += 1;
   } catch (err) {
     console.log(err);
   }
@@ -197,11 +198,11 @@ const addBookmark = async function (id) {
 
     if (photo) {
       photo.bookmark = true;
-      state.bookmarks.push(photo);
+      state.bookmarks.unshift(photo);
     } else {
       await loadPhoto(id);
       state.photo.bookmark = true;
-      state.bookmarks.push(state.photo);
+      state.bookmarks.unshift(state.photo);
     }
 
     localStorageBookmarks();

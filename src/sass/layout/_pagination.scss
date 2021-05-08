@@ -1,0 +1,16 @@
+.pagination {
+  display: flex;
+  justify-content: space-around;
+
+  &__prev,
+  &__next,
+  &__loadmore {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    color: $color-accent;
+    cursor: pointer;
+    font-weight: bold;
+  }
+}

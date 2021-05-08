@@ -1,0 +1,33 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  background-color: #f7f7f7;
+}
+
+.app {
+  max-width: 420px;
+  margin: 0 auto;
+  background-color: $color-secondary;
+  font-size: 1.4rem;
+
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 2rem;
+}
+
+.feed,
+.results,
+.bookmarks,
+.profile {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 2rem;
+}
