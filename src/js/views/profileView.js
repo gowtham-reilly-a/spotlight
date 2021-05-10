@@ -145,7 +145,8 @@ class ProfileView extends View {
           <div class="card__body">
             <img
               class="card__body--pic"
-              src="${photo.urls.regular}"
+              src="${photo.urls.thumb}"
+              data-src="${photo.urls.regular}"
               alt="red and black love print ball"
             />
             <div class="card__body--overlay hidden">
@@ -298,7 +299,8 @@ class ProfileView extends View {
           <div class="card__body">
             <img
               class="card__body--pic"
-              src="${photo.urls.regular}"
+              src="${photo.urls.thumb}"
+              data-src="${photo.urls.regular}"
               alt="red and black love print ball"
             />
             <div class="card__body--overlay hidden">

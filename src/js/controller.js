@@ -16,6 +16,7 @@ const controlRandomPhotos = async function () {
     feedView.renderSpinner();
     await model.getRandomPhotos();
     feedView.render(model.state.random);
+    feedView.lazyLoadImages();
     paginationView.showPagination();
     paginationView.render("loadmore");
   } catch (err) {
@@ -32,6 +33,7 @@ const controlSearch = async function (query) {
     searchView.hideSearchForm();
     await model.searchPhotos(query);
     resultsView.render(model.state.search.results);
+    resultsView.lazyLoadImages();
     paginationView.showPagination();
     paginationView.render(model.state.search);
   } catch (err) {
@@ -45,6 +47,7 @@ const controlSearchResults = async function (page) {
     resultsView.renderSpinner();
     await model.searchPhotos(model.state.search.query, page);
     resultsView.render(model.state.search.results);
+    resultsView.lazyLoadImages();
     paginationView.showPagination();
     paginationView.render(model.state.search);
   } catch (err) {
@@ -59,6 +62,7 @@ const controlFeedUpdate = async function (parent) {
     paginationView.renderSpinner();
     await model.getRandomPhotos();
     feedView.update(model.state.random);
+    feedView.lazyLoadImages();
     paginationView.render("loadmore");
   } catch (err) {
     console.log(err);
@@ -85,9 +89,10 @@ const controlBookmarkView = function () {
   bookmarksView.renderSpinner();
 
   setTimeout(function () {
-    if (model.state.bookmarks.length !== 0)
+    if (model.state.bookmarks.length !== 0) {
       bookmarksView.render(model.state.bookmarks);
-    else bookmarksView.renderError();
+      bookmarksView.lazyLoadImages();
+    } else bookmarksView.renderError();
   }, 500);
 };
 
@@ -114,6 +119,7 @@ const controlPhotographerProfile = async function (username) {
     paginationView.hidePagination();
     await model.getPhotographerProfile(username);
     profileView.render(model.state.photographer);
+    profileView.lazyLoadImages();
 
     if (
       model.state.photographer.curPage <= model.state.photographer.totalPages
@@ -133,6 +139,7 @@ const controlPhotographerPhotos = async function (parent) {
     paginationView.renderSpinner();
     await model.getPhotographerPhotos();
     profileView.updatePhotos(model.state.photographer.photos);
+    profileView.lazyLoadImages();
 
     if (model.state.photographer.curPage <= model.state.photographer.totalPages)
       paginationView.render("loadmore");
